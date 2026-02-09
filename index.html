@@ -71,6 +71,27 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    .heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  animation: floatUp 8s linear infinite;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-110vh);
+    opacity: 0;
+  }
+}
   </style>
 </head>
 <body>
@@ -156,5 +177,17 @@
 
     render();
   </script>
+  <script>
+  setInterval(() => {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.textContent = '❤';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 8000);
+  }, 1200);
+</script>
 </body>
 </html>
+
