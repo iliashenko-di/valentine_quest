@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Квест для самой любимой ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      color: #2b2b2b;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px;
+      width: 92%;
+      max-width: 420px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+    p {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 16px;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 16px;
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+      border-radius: 14px;
+      border: none;
+      background: #ee6f7a;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e85c68;
+    }
+    .small {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-top: 8px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="app"></div>
+
+  <script>
+    const app = document.getElementById('app');
+
+    const steps = [
+      {
+        title: 'Привет, любовь ❤️',
+        text: 'Сегодня у тебя маленький квест. Три вопроса, три подарка и один человек, который тебя очень любит. Готова?',
+        button: 'Начать'
+      },
+      {
+        title: 'Вопрос №1 🐶',
+        text: 'Есть место, которое особенно не любит наша собака после прогулки. А тебе там сейчас стоит побывать 😉',
+        answer: ['ванная', 'ванная комната'],
+        success: 'Верно! Иди туда. Там тебя ждёт первый подарок 💐'
+      },
+      {
+        title: 'Вопрос №2 🎄',
+        text: 'Мы так и не смогли попрощаться с праздником. Где в нашем доме до сих пор живёт Новый год?',
+        answer: ['елка', 'ёлка'],
+        success: 'Да! Пора заглянуть туда 🎁'
+      },
+      {
+        title: 'Вопрос №3 ✨',
+        text: 'Этот предмет ты выбрала сама, а я собрал его с любовью. Где он живёт?',
+        answer: ['комод', 'будуарный комод'],
+        success: 'Абсолютно точно ❤️ Последний подарок ждёт тебя там.'
+      },
+      {
+        title: 'Финал 💖',
+        text: 'Это был маленький квест, но мои чувства к тебе — совсем не маленькие. Спасибо, что ты есть у меня. Я люблю тебя.',
+        button: 'Обнять ❤️'
+      }
+    ];
+
+    let step = 0;
+
+    function render() {
+      const s = steps[step];
+      app.innerHTML = '';
+
+      const h1 = document.createElement('h1');
+      h1.textContent = s.title;
+      app.appendChild(h1);
+
+      const p = document.createElement('p');
+      p.textContent = s.text;
+      app.appendChild(p);
+
+      if (s.answer) {
+        const input = document.createElement('input');
+        input.placeholder = 'Твой ответ…';
+        app.appendChild(input);
+
+        const btn = document.createElement('button');
+        btn.textContent = 'Проверить';
+        btn.onclick = () => {
+          const value = input.value.trim().toLowerCase();
+          if (s.answer.includes(value)) {
+            app.innerHTML = `<h1>${s.title}</h1><p>${s.success}</p><button onclick="next()">Дальше</button>`;
+          } else {
+            input.value = '';
+            input.placeholder = 'Подумай ещё чуть-чуть 😉';
+          }
+        };
+        app.appendChild(btn);
+      } else {
+        const btn = document.createElement('button');
+        btn.textContent = s.button;
+        btn.onclick = next;
+        app.appendChild(btn);
+      }
+    }
+
+    function next() {
+      step++;
+      render();
+    }
+
+    render();
+  </script>
+</body>
+</html>
