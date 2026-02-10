@@ -37,6 +37,8 @@
     button { margin-top: 16px; width: 100%; padding: 14px; font-size: 1rem; border-radius: 14px; border: none; background: #ee6f7a; color: #fff; cursor: pointer; }
     button:hover { background: #e85c68; }
     .small { font-size: 0.9rem; opacity: 0.8; margin-top: 8px; }
+    .btn-group { display: flex; gap: 12px; margin-top: 16px; }
+    .btn-group button { flex: 1; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .heart { position: fixed; bottom: -20px; font-size: 14px; color: rgba(255,255,255,0.6); animation: floatUp 8s linear infinite; }
     @keyframes floatUp { from { transform: translateY(0); opacity: 0; } 10% { opacity: 1; } to { transform: translateY(-110vh); opacity: 0; } }
@@ -49,7 +51,11 @@
     const app = document.getElementById('app');
 
     const steps = [
-      { title: 'Привет, любовь ❤️', text: 'Сегодня у тебя маленький квест. Три вопроса, три подарка и один человек, который тебя очень любит. Готова?', button: 'Начать' },
+      {
+        title: 'Ты будешь моей валентинкой? ❤️',
+        text: 'Выбери ответ ниже',
+        start: true
+      },
       {
         title: 'Вопрос №1 🐶',
         text: 'Есть место, которое особенно не любит наша собака после прогулки. А тебе там сейчас стоит побывать 😉',
@@ -64,10 +70,22 @@
     let step = 0;
 
     function render() {
+      if (step >= steps.length) return; // Prevent rendering beyond last step
       const s = steps[step];
       app.innerHTML = '';
       const h1 = document.createElement('h1'); h1.textContent = s.title; app.appendChild(h1);
       const p = document.createElement('p'); p.textContent = s.text; app.appendChild(p);
+
+      if (s.start) {
+        const div = document.createElement('div'); div.className = 'btn-group';
+        const yesBtn = document.createElement('button'); yesBtn.textContent = 'Да';
+        const noBtn = document.createElement('button'); noBtn.textContent = 'Нет';
+        yesBtn.onclick = () => { step++; render(); };
+        noBtn.onclick = () => { alert('Ничего не выйдет 😏 Попробуй снова 😉'); };
+        div.appendChild(yesBtn); div.appendChild(noBtn);
+        app.appendChild(div);
+        return;
+      }
 
       if (s.answer) {
         const input = document.createElement('input'); input.placeholder = 'Твой ответ…'; app.appendChild(input);
@@ -79,7 +97,7 @@
           } else { input.value = ''; input.placeholder = 'Подумай ещё чуть-чуть 😉'; }
         };
         app.appendChild(btn);
-      } else {
+      } else if (s.button) {
         const btn = document.createElement('button'); btn.textContent = s.button; btn.onclick = next; app.appendChild(btn);
       }
     }
