@@ -33,11 +33,11 @@
     }
     h1 { font-size: 1.5rem; margin-bottom: 12px; }
     p { font-size: 1rem; line-height: 1.4; white-space: pre-line; }
-    input { width: 100%; padding: 12px; margin-top: 16px; font-size: 1rem; border-radius: 12px; border: 1px solid #ccc; }
-    button { margin-top: 16px; width: 100%; padding: 14px; font-size: 1rem; border-radius: 14px; border: none; background: #ee6f7a; color: #fff; cursor: pointer; }
+    input { width: calc(100% - 28px); max-width: 300px; padding: 12px; margin-top: 16px; font-size: 1rem; border-radius: 12px; border: 1px solid #ccc; display: block; margin-left: auto; margin-right: auto; }
+    button { margin-top: 16px; width: 100%; max-width: 300px; padding: 14px; font-size: 1rem; border-radius: 14px; border: none; background: #ee6f7a; color: #fff; cursor: pointer; display: block; margin-left: auto; margin-right: auto; }
     button:hover { background: #e85c68; }
-    .btn-group { display: flex; gap: 12px; margin-top: 16px; }
-    .btn-group button { flex: 1; }
+    .btn-group { display: flex; gap: 12px; margin-top: 16px; justify-content: center; }
+    .btn-group button { flex: 1; max-width: 140px; }
     a.btn-event { display:inline-block; margin-top:16px; padding:12px 20px; background:#ee6f7a; color:#fff; border-radius:12px; text-decoration:none; font-weight:bold; animation: pulse 1.2s infinite; }
     a.btn-video { display:inline-block; margin-top:10px; padding:10px 16px; background:#ee6f7a; color:#fff; border-radius:12px; text-decoration:none; font-weight:bold; }
 
@@ -105,7 +105,16 @@
         };
         app.appendChild(btn);
       } else if(s.event){
-        const icsContent=`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:20260214T190000Z\nDTEND:20260214T210000Z\nSUMMARY:Свидание-сюрприз ❤️\nDESCRIPTION:Приглашаю тебя на романтическое свидание!\nLOCATION:Наш любимый ресторан\nEND:VEVENT\nEND:VCALENDAR`;
+        const icsContent=`BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+DTSTART:20260214T190000Z
+DTEND:20260214T210000Z
+SUMMARY:Свидание-сюрприз ❤️
+DESCRIPTION:Приглашаю тебя на романтическое свидание!
+LOCATION:Наш любимый ресторан
+END:VEVENT
+END:VCALENDAR`;
         const blob=new Blob([icsContent],{type:'text/calendar'});
         const url=URL.createObjectURL(blob);
         const btn=document.createElement('a');
