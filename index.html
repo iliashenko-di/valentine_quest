@@ -105,23 +105,14 @@
         };
         app.appendChild(btn);
       } else if(s.event){
-        const icsContent=`BEGIN:VCALENDAR
-VERSION:2.0
-BEGIN:VEVENT
-DTSTART:20260214T190000Z
-DTEND:20260214T210000Z
-SUMMARY:Свидание-сюрприз ❤️
-DESCRIPTION:Приглашаю тебя на романтическое свидание!
-LOCATION:Наш любимый ресторан
-END:VEVENT
-END:VCALENDAR`;
+        const icsContent=`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:20260214T160000Z\nDTEND:20260214T230000Z\nSUMMARY:Свидание-сюрприз ❤️\nDESCRIPTION:Приглашаю тебя на романтическое свидание!\nLOCATION:Сама все узнаешь\nEND:VEVENT\nEND:VCALENDAR`;
         const blob=new Blob([icsContent],{type:'text/calendar'});
         const url=URL.createObjectURL(blob);
         const btn=document.createElement('a');
-        btn.href=url; btn.download='Свидание.ics'; btn.textContent='Принять приглашение ❤️';
+        btn.href=url;
+        btn.textContent='Принять приглашение ❤️';
         btn.className='btn-event';
-        btn.onmouseover=()=>btn.style.animation='bounceHover 0.6s infinite';
-        btn.onmouseout=()=>btn.style.animation='pulse 1.2s infinite';
+        btn.target='_blank';
         app.appendChild(btn);
       }
     }
