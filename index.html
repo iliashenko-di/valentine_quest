@@ -195,29 +195,69 @@ function render(){
 
     /* SCREEN 0 */
     if(step===0){
-      const img=document.createElement('img'); img.src='img/shiba-ass.jpg'; img.className='dogs'; app.appendChild(img);
-      app.innerHTML+='<h1>Ты будешь моей валентинкой? ❤️</h1>';
+      const img = document.createElement('img');
+          img.src = 'img/shiba-ass.jpg';
+          img.className = 'dogs';
+          app.appendChild(img);
 
-      const group=document.createElement('div'); group.className='btn-group';
-      const yes=document.createElement('button'); yes.textContent='Да'; yes.className='btn-primary';
-      yes.onclick=()=>{ step=1; addHearts(); render(); };
-      const no=document.createElement('button'); no.textContent='Нет'; no.className='btn-secondary';
-      let isEvading=false, timeoutId;
-      const evade=()=>{
-        if(isEvading) return;
-        isEvading=true;
-        const angle=Math.random()*Math.PI*2;
-        const dist=400+Math.random()*100;
-        no.style.transition='transform 0.4s ease';
-        no.style.transform=`translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`;
-        clearTimeout(timeoutId);
-        timeoutId=setTimeout(()=>{ isEvading=false; },400);
-      };
-      no.addEventListener('mouseenter',evade);
-      group.appendChild(yes); group.appendChild(no); app.appendChild(group);
+          app.innerHTML += '<h1>Ты будешь моей валентинкой? ❤️</h1>';
 
-      const bottomText=document.createElement('div'); bottomText.className='bottom-text'; bottomText.textContent='Даже не пытайся)'; app.appendChild(bottomText);
-    }
+          const group = document.createElement('div');
+          group.className = 'btn-group';
+
+          const yes = document.createElement('button');
+          yes.textContent = 'Да';
+          yes.className = 'btn-primary';
+          yes.onclick = () => { step = 1; addHearts(); render(); };
+
+          const no = document.createElement('button');
+          no.textContent = 'Нет';
+          no.className = 'btn-secondary';
+
+          let isEvading = false;
+          let timeoutId;
+          const origin = {x: 0, y: 0};
+
+          const storeOrigin = () => {
+            origin.x = no.offsetLeft;
+            origin.y = no.offsetTop;
+          };
+          setTimeout(storeOrigin, 0);
+
+          const evade = () => {
+            if (isEvading) return;
+            isEvading = true;
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 400 + Math.random() * 100;
+            no.style.transition = 'transform 0.4s ease';
+            no.style.transform = `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`;
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => { isEvading = false; }, 400);
+          };
+
+          no.addEventListener('mouseenter', evade);
+
+          const resetNo = () => {
+            no.style.transition = 'transform 0.4s ease';
+            no.style.transform = 'translate(0,0)';
+          };
+
+          yes.addEventListener('mouseenter', () => {
+            if (!no.matches(':hover')) resetNo();
+          });
+          group.addEventListener('mouseleave', () => {
+            if (!no.matches(':hover')) resetNo();
+          });
+
+          group.appendChild(yes);
+          group.appendChild(no);
+          app.appendChild(group);
+
+          const bottomText = document.createElement('div');
+          bottomText.className = 'bottom-text';
+          bottomText.textContent = 'Даже не пытайся)';
+          app.appendChild(bottomText);
+        }
 
     /* SCREEN 1 */
     if(step===1){
@@ -283,3 +323,4 @@ render();
 </script>
 </body>
 </html>
+
