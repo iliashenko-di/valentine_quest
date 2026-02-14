@@ -116,7 +116,7 @@
     const app = document.getElementById('app');
     let step = 0;
 
-    // Добавляем сердечки
+    // Сердечки
     function addHearts() {
       for (let i = 0; i < 25; i++) {
         const h = document.createElement('div');
@@ -144,7 +144,7 @@
       }
     }
 
-    // Добавляем конфетти
+    // Конфетти
     function addConfetti() {
       const colors = ['#ff3b70','#ff9de2','#ffeb3b','#4caf50','#2196f3'];
       for (let i = 0; i < 100; i++) {
@@ -202,13 +202,6 @@
 
           let isEvading = false;
           let timeoutId;
-          const origin = {x: 0, y: 0};
-
-          const storeOrigin = () => {
-            origin.x = no.offsetLeft;
-            origin.y = no.offsetTop;
-          };
-          setTimeout(storeOrigin, 0);
 
           const evade = () => {
             if (isEvading) return;
@@ -222,18 +215,6 @@
           };
 
           no.addEventListener('mouseenter', evade);
-
-          const resetNo = () => {
-            no.style.transition = 'transform 0.4s ease';
-            no.style.transform = 'translate(0,0)';
-          };
-
-          yes.addEventListener('mouseenter', () => {
-            if (!no.matches(':hover')) resetNo();
-          });
-          group.addEventListener('mouseleave', () => {
-            if (!no.matches(':hover')) resetNo();
-          });
 
           group.appendChild(yes);
           group.appendChild(no);
@@ -264,19 +245,20 @@
           app.appendChild(btn);
         }
 
-        /* SCREEN 2 */
+        /* SCREEN 2 - Наш момент */
         if (step === 2) {
-          app.innerHTML = '<h1>Тайм-код к букетику ❤️</h1>';
+          app.innerHTML = '<h1>Наш момент ❤️</h1>';
 
-          // контейнер с flex
+          // контейнер с вертикальными кнопками
           const group = document.createElement('div');
-          group.className = 'btn-group';       // используем существующий стиль
-          group.style.height = 'auto';         // чтобы контейнер не был высоким
+          group.style.display = 'flex';
           group.style.flexDirection = 'column';
           group.style.gap = '20px';
-          
+          group.style.alignItems = 'center';
+          group.style.marginTop = '30px';
+
           const videoBtn = document.createElement('button');
-          videoBtn.textContent = 'Смотри быстрее';
+          videoBtn.textContent = 'Наш таймкод';
           videoBtn.className = 'btn-secondary';
           videoBtn.onclick = () => {
             window.open('https://vkvideo.ru/video-227596514_456242908?t=1h19m11s', '_blank');
@@ -288,8 +270,9 @@
           nextBtn.className = 'btn-primary btn-disabled';
           nextBtn.onclick = () => { if (!nextBtn.classList.contains('btn-disabled')) { step = 3; render(); } };
 
-          app.appendChild(videoBtn);
-          app.appendChild(nextBtn);
+          group.appendChild(videoBtn);
+          group.appendChild(nextBtn);
+          app.appendChild(group);
         }
 
         /* SCREEN 3 */
@@ -303,11 +286,11 @@
 
           const loc = document.createElement('div');
           loc.className = 'location';
-          loc.textContent = '📍 Москва (пусть будет сюрпризом)';
+          loc.textContent = '📍 Москва';
           app.appendChild(loc);
 
           const btn = document.createElement('button');
-          btn.textContent = 'Бегу собираться';
+          btn.textContent = 'Я иду собираться';
           btn.className = 'btn-primary';
           btn.onclick = () => { step = 4; render(); addConfetti(); };
           app.appendChild(btn);
@@ -328,5 +311,3 @@
   </script>
 </body>
 </html>
-
-
