@@ -17,13 +17,22 @@
       color: #2b2b2b;
     }
 
-    .bg-heart {
+    .bg-heart, .confetti {
       position: fixed;
       font-size: 40px;
-      color: rgba(220, 0, 60, 0.25);
       user-select: none;
       pointer-events: none;
+    }
+
+    .bg-heart {
+      color: rgba(220, 0, 60, 0.25);
       transform: rotate(var(--rot));
+      animation: heartbeat 2s infinite ease-in-out;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1) rotate(var(--rot)); }
+      50% { transform: scale(1.2) rotate(var(--rot)); }
     }
 
     .card {
@@ -34,8 +43,8 @@
       max-width: 90%;
       box-shadow: 0 30px 60px rgba(0,0,0,0.15);
       text-align: center;
-      animation: fade 0.5s ease;
       position: relative;
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
 
     h1 { font-size: 2rem; margin-bottom: 20px; }
@@ -51,10 +60,15 @@
       cursor: pointer;
       display: inline-block;
       text-decoration: none;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .btn-primary { background: #4CAF50; color: #fff; }
+    button:hover, a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(255,0,80,0.3);
+    }
+
+    .btn-primary { background: #ff3b70; color: #fff; }
     .btn-secondary { background: #fff; border: 2px solid #000; }
     .btn-disabled { opacity: 0.4; pointer-events: none; }
 
@@ -68,7 +82,7 @@
       gap: 40px;
     }
 
-    .dogs { width: 240px; margin-bottom: 20px; }
+    .dogs { width: 240px; margin-bottom: 20px; border-radius: 16px; }
 
     .calendar {
       margin: 30px auto 10px;
@@ -78,18 +92,10 @@
       padding: 20px;
     }
 
-    .calendar .day {
-      font-size: 3rem;
-      font-weight: bold;
-      color: #e53935;
-    }
-
+    .calendar .day { font-size: 3rem; font-weight: bold; color: #e53935; }
     .calendar .month { font-size: 1rem; }
 
-    .location {
-      margin-top: 20px;
-      font-size: 1.1rem;
-    }
+    .location { margin-top: 20px; font-size: 1.1rem; }
 
     .bottom-text {
       position: absolute;
@@ -101,8 +107,6 @@
       user-select: none;
       text-align: center;
     }
-
-    @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
@@ -112,154 +116,208 @@
     const app = document.getElementById('app');
     let step = 0;
 
+    // Добавляем сердечки
     function addHearts() {
       for (let i = 0; i < 25; i++) {
         const h = document.createElement('div');
         h.className = 'bg-heart';
         h.textContent = '❤';
         h.style.left = Math.random() * 100 + 'vw';
-        h.style.top = Math.random() * 100 + 'vh';
+        h.style.top = Math.random() * -10 + 'vh';
         h.style.setProperty('--rot', Math.random() * 360 + 'deg');
         document.body.appendChild(h);
+
+        const speed = 1 + Math.random() * 2;
+        const drift = (Math.random() - 0.5) * 50;
+
+        function fall() {
+          const top = parseFloat(h.style.top);
+          if (top < 100) {
+            h.style.top = top + speed + 'vh';
+            h.style.left = parseFloat(h.style.left) + drift * 0.01 + 'vw';
+            requestAnimationFrame(fall);
+          } else {
+            h.remove();
+          }
+        }
+        fall();
+      }
+    }
+
+    // Добавляем конфетти
+    function addConfetti() {
+      const colors = ['#ff3b70','#ff9de2','#ffeb3b','#4caf50','#2196f3'];
+      for (let i = 0; i < 100; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.top = Math.random() * -10 + 'vh';
+        c.style.fontSize = (5 + Math.random() * 10) + 'px';
+        c.style.color = colors[Math.floor(Math.random()*colors.length)];
+        c.textContent = '🎉';
+        document.body.appendChild(c);
+
+        const speed = 2 + Math.random() * 3;
+        const drift = (Math.random() - 0.5) * 30;
+
+        function fall() {
+          const top = parseFloat(c.style.top);
+          if (top < 100) {
+            c.style.top = top + speed + 'vh';
+            c.style.left = parseFloat(c.style.left) + drift * 0.01 + 'vw';
+            requestAnimationFrame(fall);
+          } else {
+            c.remove();
+          }
+        }
+        fall();
       }
     }
 
     function render() {
-      app.innerHTML = '';
+      app.style.opacity = 0;
+      setTimeout(() => {
+        app.innerHTML = '';
 
-      /* SCREEN 0 */
-      if (step === 0) {
-        const img = document.createElement('img');
-        img.src = 'img/shiba-ass.jpg';
-        img.className = 'dogs';
-        app.appendChild(img);
+        /* SCREEN 0 */
+        if (step === 0) {
+          const img = document.createElement('img');
+          img.src = 'img/shiba-ass.jpg';
+          img.className = 'dogs';
+          app.appendChild(img);
 
-        app.innerHTML += '<h1>Ты будешь моей валентинкой? ❤️</h1>';
+          app.innerHTML += '<h1>Ты будешь моей валентинкой? ❤️</h1>';
 
-        const group = document.createElement('div');
-        group.className = 'btn-group';
+          const group = document.createElement('div');
+          group.className = 'btn-group';
 
-        const yes = document.createElement('button');
-        yes.textContent = 'Да';
-        yes.className = 'btn-primary';
-        yes.onclick = () => { step = 1; addHearts(); render(); };
+          const yes = document.createElement('button');
+          yes.textContent = 'Да';
+          yes.className = 'btn-primary';
+          yes.onclick = () => { step = 1; addHearts(); render(); };
 
-        const no = document.createElement('button');
-        no.textContent = 'Нет';
-        no.className = 'btn-secondary';
+          const no = document.createElement('button');
+          no.textContent = 'Нет';
+          no.className = 'btn-secondary';
 
-        let isEvading = false;
-        let timeoutId;
-        const origin = {x: 0, y: 0};
+          let isEvading = false;
+          let timeoutId;
+          const origin = {x: 0, y: 0};
 
-        const storeOrigin = () => {
-          origin.x = no.offsetLeft;
-          origin.y = no.offsetTop;
-        };
-        setTimeout(storeOrigin, 0);
+          const storeOrigin = () => {
+            origin.x = no.offsetLeft;
+            origin.y = no.offsetTop;
+          };
+          setTimeout(storeOrigin, 0);
 
-        const evade = () => {
-          if (isEvading) return;
-          isEvading = true;
-          const angle = Math.random() * Math.PI * 2;
-          const dist = 400 + Math.random() * 100;
-          no.style.transition = 'transform 0.4s ease';
-          no.style.transform = `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`;
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(() => { isEvading = false; }, 400);
-        };
+          const evade = () => {
+            if (isEvading) return;
+            isEvading = true;
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 400 + Math.random() * 100;
+            no.style.transition = 'transform 0.4s ease';
+            no.style.transform = `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`;
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => { isEvading = false; }, 400);
+          };
 
-        no.addEventListener('mouseenter', evade);
+          no.addEventListener('mouseenter', evade);
 
-        const resetNo = () => {
-          no.style.transition = 'transform 0.4s ease';
-          no.style.transform = 'translate(0,0)';
-        };
+          const resetNo = () => {
+            no.style.transition = 'transform 0.4s ease';
+            no.style.transform = 'translate(0,0)';
+          };
 
-        yes.addEventListener('mouseenter', () => {
-          if (!no.matches(':hover')) resetNo();
-        });
-        group.addEventListener('mouseleave', () => {
-          if (!no.matches(':hover')) resetNo();
-        });
+          yes.addEventListener('mouseenter', () => {
+            if (!no.matches(':hover')) resetNo();
+          });
+          group.addEventListener('mouseleave', () => {
+            if (!no.matches(':hover')) resetNo();
+          });
 
-        group.appendChild(yes);
-        group.appendChild(no);
-        app.appendChild(group);
+          group.appendChild(yes);
+          group.appendChild(no);
+          app.appendChild(group);
 
-        const bottomText = document.createElement('div');
-        bottomText.className = 'bottom-text';
-        bottomText.textContent = 'Даже не пытайся)';
-        app.appendChild(bottomText);
+          const bottomText = document.createElement('div');
+          bottomText.className = 'bottom-text';
+          bottomText.textContent = 'Даже не пытайся)';
+          app.appendChild(bottomText);
+        }
 
-        return;
-      }
+        /* SCREEN 1 */
+        if (step === 1) {
+          app.innerHTML = `
+            <h1>Я люблю тебя ❤️</h1>
+            <p>
+Я очень тебя люблю.
+Ты — самый важный человек в моей жизни.
+И сегодня я приготовил для тебя маленький сюрприз.
 
-      /* SCREEN 1 */
-      if (step === 1) {
-        app.innerHTML = `
-          <h1>Я люблю тебя ❤️</h1>
-          <p>
-          Я очень тебя люблю.
-          Ты — самый важный человек в моей жизни.
-          И сегодня я приготовил для тебя маленький сюрприз.
+Он ждёт тебя в ванной 💐
+            </p>
+          `;
+          const btn = document.createElement('button');
+          btn.textContent = 'Нашла';
+          btn.className = 'btn-primary';
+          btn.onclick = () => { step = 2; render(); };
+          app.appendChild(btn);
+        }
 
-          Он ждёт тебя в ванной 💐
-          </p>
-        `;
-        const btn = document.createElement('button');
-        btn.textContent = 'Нашла';
-        btn.className = 'btn-primary';
-        btn.onclick = () => { step = 2; render(); };
-        app.appendChild(btn);
-        return;
-      }
+        /* SCREEN 2 */
+        if (step === 2) {
+          app.innerHTML = '<h1>Наш момент ❤️</h1>';
 
-      /* SCREEN 2 */
-      if (step === 2) {
-        app.innerHTML = '<h1>Наш момент ❤️</h1>';
+          const videoBtn = document.createElement('button');
+          videoBtn.textContent = 'Наш таймкод';
+          videoBtn.className = 'btn-secondary';
+          videoBtn.onclick = () => {
+            window.open('https://vkvideo.ru/video-227596514_456242908?t=1h19m11s', '_blank');
+            nextBtn.classList.remove('btn-disabled');
+          };
 
-        const videoBtn = document.createElement('button');
-        videoBtn.textContent = 'Наш таймкод';
-        videoBtn.className = 'btn-secondary';
-        videoBtn.onclick = () => {
-          window.open('https://vkvideo.ru/video-227596514_456242908?t=1h19m11s', '_blank');
-          nextBtn.classList.remove('btn-disabled');
-        };
+          const nextBtn = document.createElement('button');
+          nextBtn.textContent = 'Идём дальше';
+          nextBtn.className = 'btn-primary btn-disabled';
+          nextBtn.onclick = () => { if (!nextBtn.classList.contains('btn-disabled')) { step = 3; render(); } };
 
-        const nextBtn = document.createElement('button');
-        nextBtn.textContent = 'Идём дальше';
-        nextBtn.className = 'btn-primary btn-disabled';
-        nextBtn.onclick = () => { if (!nextBtn.classList.contains('btn-disabled')) { step = 3; render(); } };
+          app.appendChild(videoBtn);
+          app.appendChild(nextBtn);
+        }
 
-        app.appendChild(videoBtn);
-        app.appendChild(nextBtn);
-        return;
-      }
+        /* SCREEN 3 */
+        if (step === 3) {
+          app.innerHTML = '<h1>Приглашаю тебя на свидание ❤️</h1>';
 
-      /* SCREEN 3 */
-      if (step === 3) {
-        app.innerHTML = '<h1>Приглашаю тебя на свидание ❤️</h1>';
+          const cal = document.createElement('div');
+          cal.className = 'calendar';
+          cal.innerHTML = '<div class="day">14</div><div class="month">февраля</div>';
+          app.appendChild(cal);
 
-        const cal = document.createElement('div');
-        cal.className = 'calendar';
-        cal.innerHTML = '<div class="day">14</div><div class="month">февраля</div>';
-        app.appendChild(cal);
+          const loc = document.createElement('div');
+          loc.className = 'location';
+          loc.textContent = '📍 Москва';
+          app.appendChild(loc);
 
-        const loc = document.createElement('div');
-        loc.className = 'location';
-        loc.textContent = '📍 Москва';
-        app.appendChild(loc);
+          const btn = document.createElement('button');
+          btn.textContent = 'Я иду собираться';
+          btn.className = 'btn-primary';
+          btn.onclick = () => { step = 4; render(); addConfetti(); };
+          app.appendChild(btn);
+        }
 
-        const btn = document.createElement('button');
-        btn.textContent = 'Я иду собираться';
-        btn.className = 'btn-primary';
-        app.appendChild(btn);
-      }
+        /* SCREEN 4 - Ура */
+        if (step === 4) {
+          app.innerHTML = '<h1 style="font-size:4rem;">Ура! 🎉</h1>';
+          addConfetti();
+        }
+
+        app.style.opacity = 1;
+        app.style.transform = 'translateY(0)';
+      }, 200);
     }
 
     render();
   </script>
 </body>
 </html>
-
