@@ -268,13 +268,12 @@
         if (step === 2) {
           app.innerHTML = '<h1>Тайм-код к букетику ❤️</h1>';
 
-          // создаём контейнер для кнопок
+          // контейнер с flex
           const group = document.createElement('div');
-          group.style.display = 'flex';
+          group.className = 'btn-group';       // используем существующий стиль
+          group.style.height = 'auto';         // чтобы контейнер не был высоким
           group.style.flexDirection = 'column';
           group.style.gap = '20px';
-          group.style.alignItems = 'center';
-          group.style.marginTop = '30px';
           
           const videoBtn = document.createElement('button');
           videoBtn.textContent = 'Смотри быстрее';
@@ -329,4 +328,5 @@
   </script>
 </body>
 </html>
+
 
