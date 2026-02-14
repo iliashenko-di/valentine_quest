@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Для тебя ❤️</title>
+<title>Для тебя, дорогая ❤️</title>
 <style>
   body {
     margin: 0;
@@ -200,7 +200,7 @@ function render(){
           img.className = 'dogs';
           app.appendChild(img);
 
-          app.innerHTML += '<h1>Ты будешь моей валентинкой? ❤️</h1>';
+          app.innerHTML += '<h1>Будешь моей валентинкой? ❤️</h1>';
 
           const group = document.createElement('div');
           group.className = 'btn-group';
@@ -255,35 +255,42 @@ function render(){
 
           const bottomText = document.createElement('div');
           bottomText.className = 'bottom-text';
-          bottomText.textContent = 'Даже не пытайся)';
+          bottomText.textContent = 'Даже не пытайся!';
           app.appendChild(bottomText);
         }
 
     /* SCREEN 1 */
     if(step===1){
-      app.innerHTML=`<h1>Я люблю тебя ❤️</h1><p>Я очень тебя люблю.
-Ты — самый важный человек в моей жизни.
-И сегодня я приготовил для тебя маленький сюрприз.
+      app.innerHTML=`<h1>Ты любовь всей моей жизни ❤️</h1><p>Я безумно тебя люблю.
+Ты — не просто самый важный человек в моей жизни. Ты - лучшее, что случалось или когда-либо случится со мной.
+Ты и представить себе не можешь как я счастлив и как рад, что ты появилась в моей жизни.
+Каждый день рядом с тобой - это буря эмоций! И только тебе решать каких именно эмоций &#128513;
+Хочу сказать, что всегда буду рядом с тобой, всегда буду поддерживать тебя во всех твоих стараниях и начинаниях.
+И даже когда тебе будет кажется, что что-то идет не так, знай - тебе кажется! И я всеми силами буду убеждать тебя, что все хорошо и идет так, как должно идти!
+Я всегда буду гордиться тобой, буду радоваться твоим успехам и достижениям. И, конечно же, буду всегда и во всем помогать тебе.
+Ведь это и есть любовь! Быть рядом и окружать заботой. Я люблю тебя, солнышко ❤️!
 
-Он ждёт тебя в ванной 💐</p>`;
-      const btn=document.createElement('button'); btn.textContent='Нашла'; btn.className='btn-primary';
+Сегодня я приготовил для тебя небольшой сюрприз.
+
+Он, кстати, ждёт тебя в ванной 💐</p>`;
+      const btn=document.createElement('button'); btn.textContent='Нашла!'; btn.className='btn-primary';
       btn.onclick=()=>{ step=2; render(); };
       app.appendChild(btn);
     }
 
     /* SCREEN 2 - Наш момент */
     if(step===2){
-      app.innerHTML='<h1>Наш момент ❤️</h1>';
+      app.innerHTML='<h1>Тайм-код к букетику ❤️</h1>';
       const group=document.createElement('div');
       group.style.display='flex';
       group.style.flexDirection='column';
       group.style.gap='20px';
       group.style.alignItems='center';
       group.style.marginTop='30px';
-      const videoBtn=document.createElement('button'); videoBtn.textContent='Наш таймкод'; videoBtn.className='btn-secondary';
+      const videoBtn=document.createElement('button'); videoBtn.textContent='Смотри быстрее!'; videoBtn.className='btn-secondary';
       const nextBtn=document.createElement('button'); nextBtn.textContent='Идём дальше'; nextBtn.className='btn-primary btn-disabled';
       videoBtn.onclick=()=>{
-        window.open('https://vkvideo.ru/video-227596514_456242908?t=1h19m11s','_blank'); 
+        window.open('https://vkvideo.ru/video-233305174_456241557?sh=4&t=1h23m7s','_blank'); 
         nextBtn.classList.remove('btn-disabled');
       };
       nextBtn.onclick=()=>{ if(!nextBtn.classList.contains('btn-disabled')){ step=3; render(); } };
@@ -294,14 +301,14 @@ function render(){
     if(step===3){
       app.innerHTML='<h1>Приглашаю тебя на свидание ❤️</h1>';
       const cal=document.createElement('div'); cal.className='calendar'; cal.innerHTML='<div class="day">14</div><div class="month">февраля</div>'; app.appendChild(cal);
-      const loc=document.createElement('div'); loc.className='location'; loc.textContent='📍 Москва'; app.appendChild(loc);
-      const btn=document.createElement('button'); btn.textContent='Я иду собираться'; btn.className='btn-primary';
+      const loc=document.createElement('div'); loc.className='location'; loc.textContent='📍 Москва (пусть будет сюрпризом)'; app.appendChild(loc);
+      const btn=document.createElement('button'); btn.textContent='Бегу собираться!'; btn.className='btn-primary';
       btn.onclick=()=>{ step=4; render(); addConfetti(); }; app.appendChild(btn);
     }
 
     /* SCREEN 4 - Ура */
     if(step===4){
-      app.innerHTML='<h1 style="font-size:4rem;">Ура! 🎉</h1>';
+      app.innerHTML='<h1 style="font-size:4rem;">Я счастлив быть твоим парнем! 🎉</h1>';
       addConfetti();
     }
 
@@ -323,4 +330,5 @@ render();
 </script>
 </body>
 </html>
+
 
