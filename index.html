@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Поздравление для моей карамельки ❤️</title>
+  <title>Для тебя ❤️</title>
   <style>
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: #2b2b2b;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       background: linear-gradient(135deg, #ffe6ec, #ffd1dc);
       overflow: hidden;
+      color: #2b2b2b;
     }
 
     .bg-heart {
@@ -29,29 +29,21 @@
     .card {
       background: #fff;
       border-radius: 24px;
-      padding: 40px 32px;
-      width: 600px;
+      padding: 48px 40px;
+      width: 640px;
       max-width: 90%;
       box-shadow: 0 30px 60px rgba(0,0,0,0.15);
       text-align: center;
+      animation: fade 0.5s ease;
+      position: relative;
     }
 
     h1 { font-size: 2rem; margin-bottom: 20px; }
-    p { font-size: 1.1rem; line-height: 1.5; white-space: pre-line; }
-
-    input {
-      width: 100%;
-      max-width: 360px;
-      padding: 14px;
-      margin-top: 20px;
-      font-size: 1rem;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-    }
+    p { font-size: 1.15rem; line-height: 1.6; white-space: pre-line; }
 
     button, a {
-      margin-top: 20px;
-      width: 240px;
+      margin-top: 24px;
+      width: 260px;
       padding: 14px;
       font-size: 1rem;
       border-radius: 14px;
@@ -59,18 +51,12 @@
       cursor: pointer;
       display: inline-block;
       text-decoration: none;
+      transition: transform 0.3s ease;
     }
 
-    .btn-yes { background: #4CAF50; color: #fff; }
-    .btn-no {
-      background: #fff;
-      color: #000;
-      border: 2px solid #000;
-      position: relative;
-      cursor: pointer;
-      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: transform;
-    }
+    .btn-primary { background: #4CAF50; color: #fff; }
+    .btn-secondary { background: #fff; border: 2px solid #000; }
+    .btn-disabled { opacity: 0.4; pointer-events: none; }
 
     .btn-group {
       position: relative;
@@ -82,7 +68,41 @@
       gap: 40px;
     }
 
-    .dogs { width: 220px; margin-bottom: 20px; }
+    .dogs { width: 240px; margin-bottom: 20px; }
+
+    .calendar {
+      margin: 30px auto 10px;
+      width: 220px;
+      border-radius: 16px;
+      border: 2px solid #f2b6c6;
+      padding: 20px;
+    }
+
+    .calendar .day {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #e53935;
+    }
+
+    .calendar .month { font-size: 1rem; }
+
+    .location {
+      margin-top: 20px;
+      font-size: 1.1rem;
+    }
+
+    .bottom-text {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9rem;
+      color: rgba(0,0,0,0.25);
+      user-select: none;
+      text-align: center;
+    }
+
+    @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
@@ -90,15 +110,6 @@
 
   <script>
     const app = document.getElementById('app');
-
-    const steps = [
-      { title: 'Доброе утро, любовь моя! У меня есть к тебе предложение. Ты будешь моей валентинкой?', start: true },
-      { title: 'Вопрос №1 🐶', text: 'Есть место, которое особенно не любит наша собака после прогулки. А тебе там сейчас стоит побывать 😉', answer: ['ванная','ванная комната'], success: 'Верно! Иди туда. Там тебя ждёт первый подарок 💐', video: 'https://vkvideo.ru/video-227596514_456242908?t=1h19m11s' },
-      { title: 'Вопрос №2 🎄', text: 'Мы так и не смогли попрощаться с праздником. Где в нашем доме до сих пор живёт Новый год?', answer: ['елка','ёлка'], success: 'Да! Пора заглянуть туда 🎁' },
-      { title: 'Вопрос №3 ✨', text: 'Этот предмет ты выбрала сама, а я собрал его с любовью. Где он живёт?', answer: ['комод','будуарный комод'], success: 'Абсолютно точно ❤️ Последний подарок ждёт тебя там.' },
-      { title: 'Финал 💖', text: 'Этот квест — маленькая игра. Но мои чувства к тебе — самая серьёзная вещь в моей жизни.\n\nЯ люблю тебя.' }
-    ];
-
     let step = 0;
 
     function addHearts() {
@@ -114,104 +125,135 @@
     }
 
     function render() {
-      if (step >= steps.length) return;
-      const s = steps[step];
       app.innerHTML = '';
 
-      const h1 = document.createElement('h1');
-      h1.textContent = s.title;
-      app.appendChild(h1);
-
-      const p = document.createElement('p');
-      p.textContent = s.text;
-      app.appendChild(p);
-
-      if (s.start) {
+      /* SCREEN 0 */
+      if (step === 0) {
         const img = document.createElement('img');
-        img.src = 'img/shiba-ass.jpg';
+        img.src = 'img/shiba-kiss.png';
         img.className = 'dogs';
         app.appendChild(img);
+
+        app.innerHTML += '<h1>Ты будешь моей валентинкой? ❤️</h1>';
 
         const group = document.createElement('div');
         group.className = 'btn-group';
 
         const yes = document.createElement('button');
         yes.textContent = 'Да';
-        yes.className = 'btn-yes';
-        yes.onclick = () => { step++; addHearts(); render(); };
+        yes.className = 'btn-primary';
+        yes.onclick = () => { step = 1; addHearts(); render(); };
 
         const no = document.createElement('button');
         no.textContent = 'Нет';
-        no.className = 'btn-no';
+        no.className = 'btn-secondary';
 
-        let escaped = false;
         let isEvading = false;
+        let timeoutId;
+        const origin = {x: 0, y: 0};
+
+        const storeOrigin = () => {
+          origin.x = no.offsetLeft;
+          origin.y = no.offsetTop;
+        };
+        setTimeout(storeOrigin, 0);
 
         const evade = () => {
           if (isEvading) return;
           isEvading = true;
-
           const angle = Math.random() * Math.PI * 2;
-          const distance = 300 + Math.random() * 180;
-          const x = Math.cos(angle) * distance;
-          const y = Math.sin(angle) * distance;
-
-          requestAnimationFrame(() => {
-            no.style.transform = `translate(${x}px, ${y}px)`;
-          });
-
-          escaped = true;
-
-          setTimeout(() => {
-            isEvading = false;
-          }, 180);
+          const dist = 400 + Math.random() * 100;
+          no.style.transition = 'transform 0.4s ease';
+          no.style.transform = `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`;
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => { isEvading = false; }, 400);
         };
 
         no.addEventListener('mouseenter', evade);
 
         const resetNo = () => {
-          if (escaped) {
-            no.style.transform = 'translate(0, 0)';
-            escaped = false;
-          }
+          no.style.transition = 'transform 0.4s ease';
+          no.style.transform = 'translate(0,0)';
         };
 
-        group.addEventListener('mouseleave', resetNo);
-        yes.addEventListener('mouseenter', resetNo);
+        yes.addEventListener('mouseenter', () => {
+          if (!no.matches(':hover')) resetNo();
+        });
+        group.addEventListener('mouseleave', () => {
+          if (!no.matches(':hover')) resetNo();
+        });
 
         group.appendChild(yes);
         group.appendChild(no);
         app.appendChild(group);
+
+        const bottomText = document.createElement('div');
+        bottomText.className = 'bottom-text';
+        bottomText.textContent = 'Даже не пытайся)';
+        app.appendChild(bottomText);
+
         return;
       }
 
-      if (s.answer) {
-        const input = document.createElement('input');
-        input.placeholder = 'Твой ответ…';
-        app.appendChild(input);
+      /* SCREEN 1 */
+      if (step === 1) {
+        app.innerHTML = `
+          <h1>Я люблю тебя ❤️</h1>
+          <p>
+          Я очень тебя люблю.
+          Ты — самый важный человек в моей жизни.
+          И сегодня я приготовил для тебя маленький сюрприз.
+
+          Он ждёт тебя в ванной 💐
+          </p>
+        `;
+        const btn = document.createElement('button');
+        btn.textContent = 'Нашла';
+        btn.className = 'btn-primary';
+        btn.onclick = () => { step = 2; render(); };
+        app.appendChild(btn);
+        return;
+      }
+
+      /* SCREEN 2 */
+      if (step === 2) {
+        app.innerHTML = '<h1>Наш момент ❤️</h1>';
+
+        const videoBtn = document.createElement('button');
+        videoBtn.textContent = 'Наш таймкод';
+        videoBtn.className = 'btn-secondary';
+        videoBtn.onclick = () => {
+          window.open('https://vkvideo.ru/video-227596514_456242908?t=1h19m11s', '_blank');
+          nextBtn.classList.remove('btn-disabled');
+        };
+
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = 'Идём дальше';
+        nextBtn.className = 'btn-primary btn-disabled';
+        nextBtn.onclick = () => { if (!nextBtn.classList.contains('btn-disabled')) { step = 3; render(); } };
+
+        app.appendChild(videoBtn);
+        app.appendChild(nextBtn);
+        return;
+      }
+
+      /* SCREEN 3 */
+      if (step === 3) {
+        app.innerHTML = '<h1>Приглашаю тебя на свидание ❤️</h1>';
+
+        const cal = document.createElement('div');
+        cal.className = 'calendar';
+        cal.innerHTML = '<div class="day">14</div><div class="month">февраля</div>';
+        app.appendChild(cal);
+
+        const loc = document.createElement('div');
+        loc.className = 'location';
+        loc.textContent = '📍 Москва';
+        app.appendChild(loc);
 
         const btn = document.createElement('button');
-        btn.textContent = 'Проверить';
-        btn.onclick = () => {
-          const val = input.value.trim().toLowerCase();
-          if (s.answer.includes(val)) {
-            app.innerHTML = `<h1>${s.title}</h1><p>${s.success}</p>`;
-            if (s.video) {
-              const a = document.createElement('a');
-              a.href = s.video;
-              a.target = '_blank';
-              a.textContent = 'Посмотреть фрагмент ❤️';
-              app.appendChild(a);
-            }
-            const nextBtn = document.createElement('button');
-            nextBtn.textContent = 'Дальше';
-            nextBtn.onclick = () => { step++; render(); };
-            app.appendChild(nextBtn);
-          } else {
-            input.value = '';
-            input.placeholder = 'Подумай ещё 😉';
-          }
-        };
+        btn.textContent = 'Я иду собираться';
+        btn.className = 'btn-primary';
         app.appendChild(btn);
       }
     }
@@ -220,4 +262,3 @@
   </script>
 </body>
 </html>
-
