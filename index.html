@@ -266,10 +266,18 @@
 
         /* SCREEN 2 */
         if (step === 2) {
-          app.innerHTML = '<h1>Наш момент ❤️</h1>';
+          app.innerHTML = '<h1>Тайм-код к букетику ❤️</h1>';
 
+          // создаём контейнер для кнопок
+          const group = document.createElement('div');
+          group.style.display = 'flex';
+          group.style.flexDirection = 'column';
+          group.style.gap = '20px';
+          group.style.alignItems = 'center';
+          group.style.marginTop = '30px';
+          
           const videoBtn = document.createElement('button');
-          videoBtn.textContent = 'Наш таймкод';
+          videoBtn.textContent = 'Смотри быстрее';
           videoBtn.className = 'btn-secondary';
           videoBtn.onclick = () => {
             window.open('https://vkvideo.ru/video-227596514_456242908?t=1h19m11s', '_blank');
@@ -296,11 +304,11 @@
 
           const loc = document.createElement('div');
           loc.className = 'location';
-          loc.textContent = '📍 Москва';
+          loc.textContent = '📍 Москва (пусть будет сюрпризом)';
           app.appendChild(loc);
 
           const btn = document.createElement('button');
-          btn.textContent = 'Я иду собираться';
+          btn.textContent = 'Бегу собираться';
           btn.className = 'btn-primary';
           btn.onclick = () => { step = 4; render(); addConfetti(); };
           app.appendChild(btn);
@@ -321,3 +329,4 @@
   </script>
 </body>
 </html>
+
